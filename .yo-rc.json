@@ -1,0 +1,9 @@
+{
+  "generator-node": {
+    "promptValues": {
+      "authorName": "Conor",
+      "authorEmail": "conor.mcmanus@gfk.com",
+      "authorUrl": ""
+    }
+  }
+}

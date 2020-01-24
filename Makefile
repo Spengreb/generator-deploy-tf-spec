@@ -1,0 +1,3 @@
+.PHONY:
+link:
+	npm link

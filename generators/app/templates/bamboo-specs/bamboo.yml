@@ -1,0 +1,56 @@
+version: 2
+plan:
+  project-key: <%= project_key %>
+  key: <%= plan_key %>
+  name: <%= plan_name %>
+variables:
+  DEFAULT_ACCESS_KEY_ID_SECRET: <%= access_key_id %>
+  DEFAULT_SECRET_ACCESS_KEY: <%= secret_access_key %>
+ 
+stages:
+  - terraform validate:
+      jobs:
+        - validate
+  - terraform plan:
+      jobs:
+        - tfplan
+  - terraform apply:
+      manual: true
+      jobs:
+        - tfapply
+
+validate:
+  tasks:
+    - script: |
+        #!/usr/bin/env bash
+        export AWS_ACCESS_KEY_ID=${bamboo_DEFAULT_ACCESS_KEY_ID_SECRET}
+        export AWS_SECRET_ACCESS_KEY=${bamboo_DEFAULT_SECRET_ACCESS_KEY}
+        terraform init
+        terraform validate
+  requirements:
+    - terraform
+
+tfplan:
+  tasks:
+    - script: |
+        #!/usr/bin/env bash
+        export AWS_ACCESS_KEY_ID=${bamboo_DEFAULT_ACCESS_KEY_ID_SECRET}
+        export AWS_SECRET_ACCESS_KEY=${bamboo_DEFAULT_SECRET_ACCESS_KEY}
+        terraform init
+        terraform plan -out=plan.tfplan 
+  artifacts:
+    - name: terraform plan
+      pattern: plan.tfplan
+  requirements:
+    - terraform
+
+tfapply:
+  tasks:
+    - script: |
+        #!/usr/bin/env bash
+        export AWS_ACCESS_KEY_ID=${bamboo_DEFAULT_ACCESS_KEY_ID_SECRET}
+        export AWS_SECRET_ACCESS_KEY=${bamboo_DEFAULT_SECRET_ACCESS_KEY}
+        terraform init
+        terraform apply -input=false plan.tfplan
+  requirements:
+    - terraform
