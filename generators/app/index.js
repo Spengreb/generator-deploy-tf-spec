@@ -14,28 +14,29 @@ module.exports = class extends Generator {
       {
         type: 'input',
         name: 'plan_name',
-        message: 'Enter display name for your project'
+        message: 'Enter display name for your project:',
+        default: 'Deploy ' + this.appname
       },
       {
         type: 'input',
         name: 'project_key',
-        message: 'Enter bamboo project key (e.g. LDM,CTP,MMSYS)',
+        message: 'Enter bamboo project key (e.g. LDM,CTP,MMSYS):',
         store: true
       },
       {
         type: 'input',
         name: 'plan_key',
-        message: 'Enter bamboo plan key (e.g. TERRADEPLOY)'
+        message: 'Enter bamboo plan key (e.g. TERRADEPLOY):'
       },
       {
         type: 'input',
         name: 'access_key_id',
-        message: 'Enter AWS Access Key ID as Spec Encrypted variable (e.g. BAMSRCT@0@0@0XXXXXX)'
+        message: 'Enter AWS Access Key ID as Spec Encrypted variable (e.g. BAMSRCT@0@0@0XXXXXX):'
       },
       {
         type: 'input',
         name: 'secret_access_key',
-        message: 'Enter AWS Secret Key as Spec Encrypted variable (e.g. BAMSRCT@0@0@0XXXXX)'
+        message: 'Enter AWS Secret Key as Spec Encrypted variable (e.g. BAMSRCT@0@0@0XXXXX):'
       }
     ];
 
@@ -50,16 +51,12 @@ module.exports = class extends Generator {
       this.templatePath('bamboo-specs/bamboo.yml'),
       this.destinationPath('bamboo-specs/bamboo.yml'),
       {
-        project_key = this.props.project_key,
-        plan_key = this.props.plan_key,
-        plan_name = this.props.plan_name,
-        access_key_id = this.props.access_key_id,
-        secret_access_key = this.props.secret_access_key
+        project_key       : this.props.project_key,
+        plan_key          : this.props.plan_key,
+        plan_name         : this.props.plan_name,
+        access_key_id     : this.props.access_key_id,
+        secret_access_key : this.props.secret_access_key
       }
     );
-  }
-
-  install() {
-    this.installDependencies();
   }
 };
